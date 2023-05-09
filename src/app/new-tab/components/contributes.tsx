@@ -41,7 +41,7 @@ export const Contributes = async (props: { size?: number; userName: string }) =>
   return (
     <div
       style={{
-        background: "var(--color-background)",
+        background: "transparent",
         width: `${width}px`,
         height: `${height}px`,
         display: "flex",
