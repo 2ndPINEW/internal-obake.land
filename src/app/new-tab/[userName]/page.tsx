@@ -1,6 +1,12 @@
+import { Clock } from "../components/clock";
 import { Contributes } from "../components/contributes";
 
 export default function NewTab({ params }: { params: { userName: string } }) {
-  /* @ts-expect-error Server Component */
-  return <Contributes userName={params.userName}></Contributes>;
+  return (
+    <>
+      <Clock></Clock>
+      {/* @ts-expect-error Server Component */}
+      <Contributes userName={params.userName}></Contributes>
+    </>
+  );
 }
