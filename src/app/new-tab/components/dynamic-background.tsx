@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Particles from "react-particles";
+import { loadFull } from "tsparticles";
+import { Engine } from "tsparticles-engine";
+import { rain, snow } from "./particles";
 
 export const DynamicBackground = () => {
   const getColor = () => {
@@ -34,6 +38,13 @@ export const DynamicBackground = () => {
     }, 60000);
   }, []);
 
+  const particlesInit = useCallback(async (engine: Engine) => {
+    // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
+  }, []);
+
   return (
     <div
       style={{
@@ -46,6 +57,16 @@ export const DynamicBackground = () => {
         zIndex: -1,
         transition: "background-color 30s ease",
       }}
-    ></div>
+    >
+      <Particles
+        id="background-particles"
+        init={particlesInit}
+        options={{
+          fpsLimit: 120,
+          particles: snow(10),
+          detectRetina: true,
+        }}
+      />
+    </div>
   );
 };
