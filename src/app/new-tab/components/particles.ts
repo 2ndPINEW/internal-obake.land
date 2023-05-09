@@ -1,5 +1,6 @@
 import { IParticlesOptions } from "tsparticles-engine";
 
+// TODO: as any 直します
 export const rain = (strong: number): IParticlesOptions => {
   return {
     rotate: {
@@ -30,7 +31,7 @@ export const rain = (strong: number): IParticlesOptions => {
       random: true,
       value: { min: 36, max: 40 },
     },
-  };
+  } as any;
 };
 
 export const snow = (strong: number): IParticlesOptions => {
@@ -86,5 +87,5 @@ export const snow = (strong: number): IParticlesOptions => {
         rotateY: 1200,
       },
     },
-  };
+  } as any;
 };
