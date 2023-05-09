@@ -16,6 +16,7 @@ export const Contributes = async (props: { size?: number; userName: string }) =>
   const size = props.size ?? 10;
   const margin = 1;
   const padding = 8;
+  const blockBorderRadius = (size / 5) * 2;
 
   const width = weeks.length * (size + margin * 2) + padding * 2;
   const height = 7 * (size + margin * 2) + padding * 2;
@@ -30,6 +31,7 @@ export const Contributes = async (props: { size?: number; userName: string }) =>
             height: `${size}px`,
             backgroundColor: day.color,
             margin: `${margin}px`,
+            borderRadius: `${blockBorderRadius}px`,
           }}
         ></div>
       );
