@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Darumadrop_One } from "next/font/google";
+import styles from "./clock.module.css";
+
+const font = Darumadrop_One({ weight: "400", subsets: [] });
 
 export const Clock = () => {
   const calcClock = () => {
@@ -20,5 +24,5 @@ export const Clock = () => {
       clearInterval(interval);
     };
   }, []);
-  return <div>{clock}</div>;
+  return <div className={[font.className, styles.clock].join(" ")}>{clock}</div>;
 };
