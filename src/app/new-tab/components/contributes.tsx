@@ -1,7 +1,7 @@
 import { retrieveContributionData } from "@/module/github";
 
-export const Contributes = async (prop: { size?: number }) => {
-  const userName = "2ndPINEW";
+export const Contributes = async (props: { size?: number; userName: string }) => {
+  const { userName } = props;
 
   if (!userName) {
     return new Response("userName is required", {
@@ -11,10 +11,9 @@ export const Contributes = async (prop: { size?: number }) => {
 
   const contributes = await retrieveContributionData(userName);
 
-  const { weeks } =
-    contributes.data.user.contributionsCollection.contributionCalendar;
+  const { weeks } = contributes.data.user.contributionsCollection.contributionCalendar;
 
-  const size = prop.size ?? 10;
+  const size = props.size ?? 10;
   const margin = 1;
 
   const width = weeks.length * (size + margin * 2);
