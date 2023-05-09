@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
-import { Engine } from "tsparticles-engine";
+import { Engine, IParticlesOptions } from "tsparticles-engine";
 import { rain, snow } from "./particles";
+import { retrieveWeatherData } from "@/module/weather";
 
 export const DynamicBackground = () => {
   const getColor = () => {
@@ -27,8 +28,21 @@ export const DynamicBackground = () => {
     }
   };
   const [backgroundColor, setBackgroundColor] = useState(getColor());
+  const [particles, setParticles] = useState<IParticlesOptions | undefined>(undefined);
 
   useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position);
+      retrieveWeatherData(position.coords).then((weathers) => {
+        const weather = weathers[0];
+        if (weather.precipitationProbabilityMax > 65) {
+          const strong = weather.precipitationSum * 10;
+          const particle = weather.snowfallSum > 0 ? snow(strong) : rain(strong);
+          setParticles(particle);
+        }
+      });
+    });
+
     const interval = setInterval(() => {
       setBackgroundColor(getColor());
 
@@ -63,7 +77,7 @@ export const DynamicBackground = () => {
         init={particlesInit}
         options={{
           fpsLimit: 120,
-          particles: snow(10),
+          particles,
           detectRetina: true,
         }}
       />
