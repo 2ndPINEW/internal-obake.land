@@ -22,8 +22,8 @@ export const rain = (strong: number): IParticlesOptions => {
     shape: {
       stroke: {
         color: "#ffffff",
-        width: 0.25,
-        opacity: 0.75,
+        width: 0.5,
+        opacity: 1,
       },
       type: "line",
     },
