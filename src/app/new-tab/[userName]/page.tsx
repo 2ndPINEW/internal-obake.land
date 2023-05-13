@@ -8,8 +8,6 @@ export const metadata = {
   description: "This is New Tab Override Page",
 };
 
-export const revalidate = 3600;
-
 export default function NewTab({ params }: { params: { userName: string } }) {
   return (
     <div className={styles.wrapper}>

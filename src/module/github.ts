@@ -42,9 +42,7 @@ query($userName:String!) {
 }
 `;
 
-export async function retrieveContributionData(
-  userName: string
-): Promise<Github.ApiResponse> {
+export async function retrieveContributionData(userName: string): Promise<Github.ApiResponse> {
   const variables = `
   {
     "userName": "${userName}"
