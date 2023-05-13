@@ -2,7 +2,6 @@ import styles from "./page.module.css";
 import { Clock } from "../components/clock/clock";
 import { Contributes } from "../components/contributes";
 import { DynamicBackground } from "../components/dynamic-background";
-import { RequestContext } from "next/dist/server/base-server";
 
 export const metadata = {
   title: "New Tab",
@@ -11,7 +10,7 @@ export const metadata = {
 
 export const revalidate = 3600;
 
-export default function NewTab({ params }: { params: { userName: string }; context: RequestContext }) {
+export default function NewTab({ params }: { params: { userName: string } }) {
   return (
     <div className={styles.wrapper}>
       <DynamicBackground></DynamicBackground>
