@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 export const sendTheme = async (userId: string, theme: ThemeType) => {
   const res = await kv.set(`${userId ?? ""} - theme`, JSON.stringify(theme));
   revalidatePath(`/new-tab/${userId}`);
-  console.log(res);
 };
 
 export const fetchTheme = async (userId: string) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Engine, IParticlesOptions } from "tsparticles-engine";
@@ -9,7 +9,7 @@ import { retrieveWeatherData } from "@/module/weather";
 import { ThemeType } from "@/module/theme";
 
 export const DynamicBackground = ({ theme }: { theme: ThemeType }) => {
-  const getColor = () => {
+  const getColor = useMemo(() => {
     if (theme) return theme.color;
 
     const now = new Date();
@@ -29,15 +29,15 @@ export const DynamicBackground = ({ theme }: { theme: ThemeType }) => {
     } else {
       return "#41526b";
     }
-  };
-  const [backgroundColor, setBackgroundColor] = useState(getColor());
+  }, [theme]);
+
+  const [backgroundColor, setBackgroundColor] = useState(getColor);
   const [particles, setParticles] = useState<IParticlesOptions | undefined>(
     undefined
   );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
       retrieveWeatherData(position.coords).then((weathers) => {
         const weather = weathers[0];
         if (weather.precipitationProbabilityMax > 65) {
@@ -50,13 +50,17 @@ export const DynamicBackground = ({ theme }: { theme: ThemeType }) => {
     });
 
     const interval = setInterval(() => {
-      setBackgroundColor(getColor());
+      setBackgroundColor(getColor);
 
       return () => {
         clearInterval(interval);
       };
     }, 60000);
   }, []);
+
+  useEffect(() => {
+    setBackgroundColor(getColor);
+  }, [getColor]);
 
   const particlesInit = useCallback(async (engine: Engine) => {
     // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets

@@ -1,11 +1,20 @@
-import {
-  DefaultThemeLabel,
-  ThemeLabel,
-} from "../theme-labels-list/label/label";
-import { ThemeNameTypes, themes } from "@/module/theme";
+import { ThemeLabel } from "../label/label";
+import { ThemeNameTypes, ThemeType, themes } from "@/module/theme";
 import styles from "./theme-labels-list.module.css";
 
-export const ThemeLabelsList = ({ userName }: { userName: string }) => {
+type Props = {
+  userName: string;
+  setTheme: (theme: ThemeType) => void;
+  currentTheme: ThemeType;
+  close: () => void;
+};
+
+export const ThemeLabelsList = ({
+  userName,
+  currentTheme,
+  setTheme,
+  close,
+}: Props) => {
   return (
     <div className={styles.wrapper}>
       {Object.entries(themes).map((arr) => {
@@ -17,13 +26,13 @@ export const ThemeLabelsList = ({ userName }: { userName: string }) => {
               name={jaName as ThemeNameTypes}
               color={color}
               userName={userName}
+              currentTheme={currentTheme}
+              setTheme={setTheme}
+              close={close}
             />
           </div>
         );
       })}
-      <div>
-        <DefaultThemeLabel />
-      </div>
     </div>
   );
 };

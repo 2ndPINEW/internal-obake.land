@@ -1,24 +1,31 @@
-import { Theme } from "@/module/theme";
+import { Theme, ThemeType } from "@/module/theme";
 import styles from "./label.module.css";
 import { sendTheme } from "@/app/actions/theme-modal";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
+type Props = Theme[keyof Theme] & {
+  userName: string;
+  currentTheme: ThemeType;
+  setTheme: (theme: ThemeType) => void;
+  close: () => void;
+};
+
 export const ThemeLabel = ({
   name,
   color,
   userName,
-}: Theme[keyof Theme] & { userName: string }) => {
+  setTheme,
+  close,
+}: Props) => {
   const router = useRouter();
   const [_isPending, startTransition] = useTransition();
 
   const action = async () => {
     await sendTheme(userName ?? "", { name, color });
-    await fetch("");
+    setTheme({ name, color });
+    close();
 
-    // TODO: 画面の更新がうまくできていない
-    // おそらくpage.tsxのserver componentgが再描画？再呼び出し？されてないことが原因
-    // 以下のトランジションのリフレッシュも効いてない
     startTransition(() => {
       router.refresh();
     });
@@ -32,16 +39,6 @@ export const ThemeLabel = ({
         value={name}
         style={{ background: color }}
       />
-    </form>
-  );
-};
-
-export const DefaultThemeLabel = () => {
-  return (
-    <form>
-      <button type="submit" className={styles.label}>
-        デフォルト
-      </button>
     </form>
   );
 };
