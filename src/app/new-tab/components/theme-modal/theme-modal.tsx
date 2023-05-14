@@ -1,16 +1,34 @@
 "use client";
 
+import { ThemeLabelsList } from "./theme-labels-list/theme-labels-list";
 import styles from "./theme-modal.module.css";
-import kv from "@vercel/kv";
+import { IoMdClose } from "react-icons/io";
 
-export const ThemeModal = async () => {
-  const hoge: string = (await kv.get("hoge")) ?? "not found";
-
-  await new Promise((resolve) => resolve("hoge"));
+export const ThemeModal = ({
+  isOpen,
+  close,
+  userName,
+}: {
+  isOpen: boolean;
+  close: () => void;
+  userName: string;
+}) => {
+  if (!isOpen) return null;
 
   return (
-    <div>
-      <div>{hoge}</div>
+    <div className={styles.modalWrapper}>
+      <div className={styles.content}>
+        <h2 className={styles.menuTitle}>Theme</h2>
+        <ThemeLabelsList userName={userName} />
+
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={() => close()}
+        >
+          <IoMdClose fontSize={30} color="rgb(104, 100, 100)" />
+        </button>
+      </div>
     </div>
   );
 };

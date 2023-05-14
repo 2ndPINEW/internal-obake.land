@@ -1,0 +1,9 @@
+.wrapper {
+  position: relative;
+}
+
+.openModalButton {
+  cursor: pointer;
+  background: inherit;
+  border: none;
+}

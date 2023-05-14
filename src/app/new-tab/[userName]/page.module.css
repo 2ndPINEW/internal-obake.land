@@ -4,4 +4,11 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  position: relative;
+}
+
+.openModalButton {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
 }

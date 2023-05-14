@@ -6,9 +6,12 @@ import { loadFull } from "tsparticles";
 import { Engine, IParticlesOptions } from "tsparticles-engine";
 import { rain, snow } from "./particles";
 import { retrieveWeatherData } from "@/module/weather";
+import { ThemeType } from "@/module/theme";
 
-export const DynamicBackground = () => {
+export const DynamicBackground = ({ theme }: { theme: ThemeType }) => {
   const getColor = () => {
+    if (theme) return theme.color;
+
     const now = new Date();
     const hour = now.getHours();
     if (5 <= hour && hour < 8) {
@@ -28,7 +31,9 @@ export const DynamicBackground = () => {
     }
   };
   const [backgroundColor, setBackgroundColor] = useState(getColor());
-  const [particles, setParticles] = useState<IParticlesOptions | undefined>(undefined);
+  const [particles, setParticles] = useState<IParticlesOptions | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -37,7 +42,8 @@ export const DynamicBackground = () => {
         const weather = weathers[0];
         if (weather.precipitationProbabilityMax > 65) {
           const strong = weather.precipitationSum * 10;
-          const particle = weather.snowfallSum > 0 ? snow(strong) : rain(strong);
+          const particle =
+            weather.snowfallSum > 0 ? snow(strong) : rain(strong);
           setParticles(particle);
         }
       });
