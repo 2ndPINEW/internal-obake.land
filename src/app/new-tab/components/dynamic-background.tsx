@@ -1,14 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Engine, IParticlesOptions } from "tsparticles-engine";
 import { rain, snow } from "./particles";
 import { retrieveWeatherData } from "@/module/weather";
+import { ThemeType } from "@/module/theme";
 
-export const DynamicBackground = () => {
-  const getColor = () => {
+export const DynamicBackground = ({ theme }: { theme: ThemeType }) => {
+  const getColor = useMemo(() => {
+    if (theme) return theme.color;
+
     const now = new Date();
     const hour = now.getHours();
     if (5 <= hour && hour < 8) {
@@ -26,31 +29,38 @@ export const DynamicBackground = () => {
     } else {
       return "#41526b";
     }
-  };
-  const [backgroundColor, setBackgroundColor] = useState(getColor());
-  const [particles, setParticles] = useState<IParticlesOptions | undefined>(undefined);
+  }, [theme]);
+
+  const [backgroundColor, setBackgroundColor] = useState(getColor);
+  const [particles, setParticles] = useState<IParticlesOptions | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
       retrieveWeatherData(position.coords).then((weathers) => {
         const weather = weathers[0];
         if (weather.precipitationProbabilityMax > 65) {
           const strong = weather.precipitationSum * 10;
-          const particle = weather.snowfallSum > 0 ? snow(strong) : rain(strong);
+          const particle =
+            weather.snowfallSum > 0 ? snow(strong) : rain(strong);
           setParticles(particle);
         }
       });
     });
 
     const interval = setInterval(() => {
-      setBackgroundColor(getColor());
+      setBackgroundColor(getColor);
 
       return () => {
         clearInterval(interval);
       };
     }, 60000);
   }, []);
+
+  useEffect(() => {
+    setBackgroundColor(getColor);
+  }, [getColor]);
 
   const particlesInit = useCallback(async (engine: Engine) => {
     // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
