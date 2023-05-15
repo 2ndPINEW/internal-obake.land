@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   return new Response(body.toString(), {
     headers: {
       "content-type": "text/html;charset=UTF-8",
-      "cache-control": "maxage=3600, stale-while-revalidate",
+      "cache-control": "maxage=3600, stale-while-revalidate=3600, immutable",
     },
   });
 }
