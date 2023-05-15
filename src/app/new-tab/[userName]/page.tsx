@@ -1,11 +1,8 @@
 import styles from "./page.module.css";
 import { Clock } from "../components/clock/clock";
 import { Contributes } from "../components/contributes";
-import { DynamicBackground } from "../components/dynamic-background";
-import { OpenButton } from "../components/theme/button/open-button";
 import { fetchTheme } from "@/app/actions/theme-modal";
 import { ThemeType } from "@/module/theme";
-import { experimental_useOptimistic as useOptimistic } from "react";
 import { ThemeContainer } from "../components/theme/theme-container/theme-container";
 
 export const metadata = {
